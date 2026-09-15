@@ -1,5 +1,5 @@
 export type ThreatLevel = 'SAFE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-export type ScanType = 'url' | 'qr' | 'message' | 'opportunity' | 'file' | 'otp';
+export type ScanType = 'url' | 'qr' | 'message' | 'opportunity' | 'file' | 'otp' | 'website';
 
 export interface DomainInfo {
   hostname: string;
