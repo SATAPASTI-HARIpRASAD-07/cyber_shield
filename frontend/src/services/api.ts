@@ -72,7 +72,7 @@ function generateClientFallbackResult(type: ScanType, input: string, context?: a
 
   if (inputLower.includes('pay') || inputLower.includes('fee') || inputLower.includes('₹') || inputLower.includes('rs') || inputLower.includes('deposit')) {
     score += 45;
-    reasons.append ? reasons.push('Upfront payment/registration fee requested in message.') : reasons.push('Upfront payment requested.');
+    reasons.push('Upfront payment/registration fee requested in message.');
   }
 
   if (inputLower.includes('urgent') || inputLower.includes('immediately') || inputLower.includes('today') || inputLower.includes('warning')) {
