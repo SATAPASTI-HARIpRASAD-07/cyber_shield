@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYBER SHIELD X - Focused Security Protection Suite</title>
+  <meta name="description" content="CYBER SHIELD X - Focused Cybersecurity Protection Suite & Screenshot Shield Platform." />
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Client-side OCR Engine for Screenshot Shield -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+</head>
+<body>
+  <div id="app-container">
+    
+    <!-- TOAST NOTIFICATIONS CONTAINER -->
+    <div id="toast-container" aria-live="polite"></div>
+
+    <!-- DEDICATED MOBILE NAVIGATION DRAWER -->
+    <div id="mobile-drawer-overlay" class="mobile-drawer-overlay" onclick="app.closeMobileMenu()"></div>
+    <aside id="mobile-drawer" class="mobile-drawer" aria-label="Mobile Navigation Menu">
+      <div class="mobile-drawer-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.4rem;">🛡️</span>
+          <strong style="font-size: 1rem; color: var(--text-primary);">CYBER SHIELD X</strong>
+        </div>
+        <button class="nav-btn" style="min-height: 40px; min-width: 40px;" onclick="app.closeMobileMenu()">✕</button>
+      </div>
+
+      <div class="sidebar-category-label">SECURITY PROTECTION SUITE</div>
+      <ul class="mobile-nav-list">
+        <li><a class="mobile-nav-item active" data-view="view-dashboard" onclick="app.showView('view-dashboard')"><span>🏠</span><span>Student Dashboard</span></a></li>
+        <li><a class="mobile-nav-item" data-view="view-url" onclick="app.showView('view-url')"><span>🌐</span><span>URL & Website Shield</span></a></li>
+        <li><a class="mobile-nav-item" data-view="view-qr" onclick="app.showView('view-qr')"><span>▦</span><span>QR Scanner Shield</span></a></li>
+        <li><a class="mobile-nav-item" data-view="view-email" onclick="app.showView('view-email')"><span>✉️</span><span>Email & Message Shield</span></a></li>
+        <li><a class="mobile-nav-item" data-view="view-file" onclick="app.showView('view-file')"><span>📄</span><span>Malware & File Shield</span></a></li>
+        <li><a class="mobile-nav-item" data-view="view-screenshot" onclick="app.showView('view-screenshot')"><span>📸</span><span>Screenshot Shield</span></a></li>
+      </ul>
+    </aside>
+
+    <!-- SINGLE PRIMARY NAVIGATION HEADER (SECTION 10 & 23) -->
+    <header class="navbar" role="banner">
+      <div class="brand-container">
+        <button class="nav-btn mobile-menu-trigger" title="Open Mobile Menu" onclick="app.toggleMobileMenu()">
+          <span>☰</span>
+        </button>
+        <span class="brand-icon" aria-hidden="true">🛡️</span>
+        <div>
+          <h1 class="brand-title">CYBER SHIELD X</h1>
+          <p class="brand-tagline">CHECK BEFORE YOU TRUST</p>
+        </div>
+      </div>
+
+      <!-- Right Actions: System Status Pill & Global Dark/Light Mode Switcher -->
+      <div class="nav-right-actions">
+        <div id="global-status-badge" class="status-pill safe" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="global-status-text">SYSTEM SECURE</span>
+        </div>
+
+        <button id="btn-theme-toggle" class="nav-btn" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN APPLICATION WRAPPER (SIDEBAR + CONTENT PANE) -->
+    <div class="saas-layout-wrapper" style="display: flex;">
+
+      <!-- EXACT SIDEBAR NAVIGATION (SECTION 2 & 22) -->
+      <aside class="sidebar" role="navigation" aria-label="Security Protection Suite Sidebar">
+        <div class="sidebar-category-label">SECURITY PROTECTION SUITE</div>
+        <ul class="sidebar-menu">
+          <li><a class="sidebar-item active" data-view="view-dashboard" onclick="app.showView('view-dashboard')"><span>🏠</span><span>Student Dashboard</span></a></li>
+          <li><a class="sidebar-item" data-view="view-url" onclick="app.showView('view-url')"><span>🌐</span><span>URL & Website Shield</span></a></li>
+          <li><a class="sidebar-item" data-view="view-qr" onclick="app.showView('view-qr')"><span>▦</span><span>QR Scanner Shield</span></a></li>
+          <li><a class="sidebar-item" data-view="view-email" onclick="app.showView('view-email')"><span>✉️</span><span>Email & Message Shield</span></a></li>
+          <li><a class="sidebar-item" data-view="view-file" onclick="app.showView('view-file')"><span>📄</span><span>Malware & File Shield</span></a></li>
+          <li><a class="sidebar-item" data-view="view-screenshot" onclick="app.showView('view-screenshot')"><span>📸</span><span>Screenshot Shield</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer-widget" style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border);">
+          <div style="font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">PROTECTION ENGINE</div>
+          <div style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 700; color: var(--safe); margin-top: 0.2rem;">
+            <span>🟢</span>
+            <span>5 Tools Active</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTRAL CONTENT PANE -->
+      <main class="main-content-pane" role="main" style="flex: 1; padding: 1.5rem;">
+
+        <!-- ============================================================
+             VIEW 1: STUDENT DASHBOARD (MAIN LANDING PAGE - SECTION 3)
+             ============================================================ -->
+        <div id="view-dashboard" class="content-view">
+          
+          <div class="hero-security-card">
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.4rem; color: var(--safe); font-weight: 800; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px;">
+                <span>🟢</span> <span>SECURITY STATUS</span>
+              </div>
+              <h2 id="hero-status-heading" class="hero-status-title">PROTECTED</h2>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.2rem;">
+                Your current environment is clear. Select any tool below to inspect suspicious content.
+              </p>
+            </div>
+            <div style="font-size: 2.8rem; filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.3));">🛡️</div>
+          </div>
+
+          <!-- 5 RETAINED SECURITY TOOL CARDS (SECTION 3 & 24) -->
+          <div class="section-title" style="margin-top: 1.25rem;">
+            <span>⚡</span>
+            <span>CYBER SHIELD SECURITY PROTECTION SUITE</span>
+          </div>
+
+          <div class="tools-grid-5">
+
+            <!-- Card 1: URL & Website Shield -->
+            <div class="scanner-card tool-card">
+              <div class="tool-card-header">
+                <span class="tool-icon">🌐</span>
+                <div>
+                  <h3 class="tool-card-title">URL & WEBSITE SHIELD</h3>
+                  <p class="tool-card-desc">Analyze suspicious URLs, domains, and phishing websites.</p>
+                </div>
+              </div>
+              <button class="action-btn action-btn-primary" style="width: 100%; margin-top: 1rem;" onclick="app.showView('view-url')">
+                <span>SCAN URL</span>
+              </button>
+            </div>
+
+            <!-- Card 2: QR Scanner Shield -->
+            <div class="scanner-card tool-card">
+              <div class="tool-card-header">
+                <span class="tool-icon">▦</span>
+                <div>
+                  <h3 class="tool-card-title">QR SCANNER SHIELD</h3>
+                  <p class="tool-card-desc">Scan or upload QR codes and safely analyze their content.</p>
+                </div>
+              </div>
+              <button class="action-btn action-btn-primary" style="width: 100%; margin-top: 1rem;" onclick="app.showView('view-qr')">
+                <span>SCAN QR</span>
+              </button>
+            </div>
+
+            <!-- Card 3: Email & Message Shield -->
+            <div class="scanner-card tool-card">
+              <div class="tool-card-header">
+                <span class="tool-icon">✉️</span>
+                <div>
+                  <h3 class="tool-card-title">EMAIL & MESSAGE SHIELD</h3>
+                  <p class="tool-card-desc">Analyze suspicious emails, messages, phishing content, and screenshots.</p>
+                </div>
+              </div>
+              <button class="action-btn action-btn-primary" style="width: 100%; margin-top: 1rem;" onclick="app.showView('view-email')">
+                <span>ANALYZE EMAIL</span>
+              </button>
+            </div>
+
+            <!-- Card 4: Malware & File Shield -->
+            <div class="scanner-card tool-card">
+              <div class="tool-card-header">
+                <span class="tool-icon">📄</span>
+                <div>
+                  <h3 class="tool-card-title">MALWARE & FILE SHIELD</h3>
+                  <p class="tool-card-desc">Upload a file and analyze it for security risks and double extensions.</p>
+                </div>
+              </div>
+              <button class="action-btn action-btn-primary" style="width: 100%; margin-top: 1rem;" onclick="app.showView('view-file')">
+                <span>SCAN FILE</span>
+              </button>
+            </div>
+
+            <!-- Card 5: Screenshot Shield -->
+            <div class="scanner-card tool-card" style="border-color: rgba(56, 189, 248, 0.35); background: linear-gradient(180deg, var(--cyan-soft) 0%, var(--surface-secondary) 100%);">
+              <div class="tool-card-header">
+                <span class="tool-icon">📸</span>
+                <div>
+                  <h3 class="tool-card-title">SCREENSHOT SHIELD</h3>
+                  <p class="tool-card-desc">Upload a screenshot of suspicious content from Gmail, WhatsApp, or SMS.</p>
+                </div>
+              </div>
+              <button class="action-btn action-btn-primary" style="width: 100%; margin-top: 1rem;" onclick="app.showView('view-screenshot')">
+                <span>ANALYZE SCREENSHOT</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ============================================================
+             VIEW 2: URL & WEBSITE SHIELD (SECTION 5)
+             ============================================================ -->
+        <div id="view-url" class="content-view" style="display: none;">
+          <div class="section-title">
+            <span>🌐</span>
+            <span>URL & WEBSITE SHIELD</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Inspect suspicious web links, check protocols, domain spellings, and lookalike brand anomalies.
+          </p>
+
+          <div class="scanner-card">
+            <div class="input-group">
+              <label for="input-url-field" class="input-label">ENTER WEBSITE URL / LINK</label>
+              <input type="text" id="input-url-field" class="text-input" placeholder="e.g. https://university-portal.edu/admissions" value="http://paypa1-security-check.com/verify-account" />
+            </div>
+
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.75rem;">
+              <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); align-self: center;">TEST URLS:</span>
+              <button class="preset-btn" style="font-size: 0.75rem;" onclick="document.getElementById('input-url-field').value='https://university-portal.edu/admissions'; app.analyzeURLTool();">🟢 Safe URL</button>
+              <button class="preset-btn critical" style="font-size: 0.75rem;" onclick="document.getElementById('input-url-field').value='http://paypa1-security-check.com/verify-account'; app.analyzeURLTool();">🔴 Phishing Lookalike URL</button>
+            </div>
+
+            <button class="action-btn action-btn-primary" style="margin-top: 1rem;" onclick="app.analyzeURLTool()">
+              🔍 SCAN URL
+            </button>
+          </div>
+
+          <div id="url-result-display" style="display: none; margin-top: 1.25rem;"></div>
+        </div>
+
+        <!-- ============================================================
+             VIEW 3: QR SCANNER SHIELD (SECTION 6)
+             ============================================================ -->
+        <div id="view-qr" class="content-view" style="display: none;">
+          <div class="section-title">
+            <span>▦</span>
+            <span>QR SCANNER SHIELD</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Scan or decode QR code payloads safely without automatically opening destination links.
+          </p>
+
+          <div class="scanner-card">
+            <div class="input-group">
+              <label for="input-qr-field" class="input-label">DECODED QR LINK OR PAYLOAD STRING</label>
+              <input type="text" id="input-qr-field" class="text-input" placeholder="e.g. https://qr-pay-food.info?pay=99" value="https://bit.ly/3x89qAZ-fake-stipend" />
+            </div>
+
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.75rem;">
+              <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); align-self: center;">PRESETS:</span>
+              <button class="preset-btn" style="font-size: 0.75rem;" onclick="document.getElementById('input-qr-field').value='https://campus-food-menu.edu/order'; app.analyzeQRTool();">🟢 Safe QR Link</button>
+              <button class="preset-btn critical" style="font-size: 0.75rem;" onclick="document.getElementById('input-qr-field').value='https://bit.ly/3x89qAZ-fake-stipend'; app.analyzeQRTool();">🔴 Shortened QR Phishing Link</button>
+            </div>
+
+            <button class="action-btn action-btn-primary" style="margin-top: 1rem;" onclick="app.analyzeQRTool()">
+              ▦ SCAN QR
+            </button>
+          </div>
+
+          <div id="qr-result-display" style="display: none; margin-top: 1.25rem;"></div>
+        </div>
+
+        <!-- ============================================================
+             VIEW 4: EMAIL & MESSAGE SHIELD (SECTION 7)
+             ============================================================ -->
+        <div id="view-email" class="content-view" style="display: none;">
+          <div class="section-title">
+            <span>✉️</span>
+            <span>EMAIL & MESSAGE SHIELD</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Analyze suspicious email text, SMS, job offers, or payment message content for scam indicators.
+          </p>
+
+          <div class="scanner-card">
+            <div class="input-group">
+              <label for="input-email-sender-field" class="input-label">SENDER ADDRESS / SOURCE</label>
+              <input type="text" id="input-email-sender-field" class="text-input" placeholder="e.g. support@paypa1-verify-account.com" value="support-security@paypa1-verify-account.com" />
+            </div>
+
+            <div class="input-group" style="margin-top: 0.65rem;">
+              <label for="input-email-subject-field" class="input-label">SUBJECT / TITLE</label>
+              <input type="text" id="input-email-subject-field" class="text-input" placeholder="e.g. URGENT: Student Account Suspended" value="URGENT: Account Suspension Warning" />
+            </div>
+
+            <div class="input-group" style="margin-top: 0.65rem;">
+              <label for="input-email-text-field" class="input-label">MESSAGE CONTENT BODY</label>
+              <textarea id="input-email-text-field" class="textarea-input" placeholder="Paste message text here...">URGENT: Your account has been suspended due to unauthorized login attempts! Click link immediately to verify password or admission will be canceled: http://paypa1-security-check.com/login</textarea>
+            </div>
+
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.75rem;">
+              <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); align-self: center;">PRESETS:</span>
+              <button class="preset-btn critical" style="font-size: 0.75rem;" onclick="app.loadEmailPreset('phishing')">🔴 Phishing Email</button>
+              <button class="preset-btn critical" style="font-size: 0.75rem;" onclick="app.loadEmailPreset('internship')">🔴 WFH Internship Fee Scam</button>
+              <button class="preset-btn" style="font-size: 0.75rem;" onclick="app.loadEmailPreset('safe')">🟢 Safe Email</button>
+            </div>
+
+            <button class="action-btn action-btn-primary" style="margin-top: 1rem;" onclick="app.analyzeEmailTool()">
+              ✉️ ANALYZE EMAIL
+            </button>
+          </div>
+
+          <div id="email-result-display" style="display: none; margin-top: 1.25rem;"></div>
+        </div>
+
+        <!-- ============================================================
+             VIEW 5: MALWARE & FILE SHIELD (SECTION 8)
+             ============================================================ -->
+        <div id="view-file" class="content-view" style="display: none;">
+          <div class="section-title">
+            <span>📄</span>
+            <span>MALWARE & FILE SHIELD</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Upload files safely to check extension anomalies, double-extension malware, and calculate SHA-256 hashes.
+          </p>
+
+          <div class="scanner-card">
+            
+            <div id="drag-drop-zone-file" class="drag-drop-zone" onclick="document.getElementById('file-input-native').click()">
+              <div class="drag-drop-icon">📄</div>
+              <div style="font-weight: 800; font-size: 1.05rem;">DROP FILE HERE TO SCAN</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);">or click to browse files from your computer</div>
+              
+              <button type="button" class="action-btn action-btn-secondary" style="margin-top: 0.4rem; padding: 0.4rem 0.9rem; font-size: 0.78rem;">
+                📁 CHOOSE FILE
+              </button>
+
+              <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.3rem; font-family: var(--font-mono);">
+                PDF • DOCX • TXT • CSV • XLSX • PNG • JPG (Max 15MB)
+              </div>
+
+              <input type="file" id="file-input-native" accept=".pdf,.txt,.doc,.docx,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.exe" style="display: none;" onchange="app.handleFilePicker(this.files)" />
+            </div>
+
+            <div id="file-selected-box" style="display: none; margin-top: 1rem;">
+              <div class="file-selected-card">
+                <div style="display: flex; align-items: center; gap: 0.85rem;">
+                  <span style="font-size: 1.8rem;">📄</span>
+                  <div>
+                    <div id="selected-file-name-text" style="font-weight: 800; font-size: 0.95rem;">Scholarship_Grant_Form.pdf</div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.15rem;">
+                      <span id="selected-file-badge-text" class="file-type-badge">PDF</span>
+                      <span id="selected-file-size-text" style="font-size: 0.78rem; color: var(--text-muted);">2.4 MB</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <button type="button" class="action-btn action-btn-secondary" style="min-height: 36px; padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="app.clearFileSelection()">
+                  Change File
+                </button>
+              </div>
+
+              <button class="action-btn action-btn-primary" style="width: 100%; margin-top: 1rem;" onclick="app.analyzeFileTool()">
+                📄 SCAN FILE
+              </button>
+            </div>
+
+          </div>
+
+          <div id="file-result-display" style="display: none; margin-top: 1.25rem;"></div>
+        </div>
+
+        <!-- ============================================================
+             VIEW 6: SCREENSHOT SHIELD — NEW FEATURE (SECTION 4)
+             ============================================================ -->
+        <div id="view-screenshot" class="content-view" style="display: none;">
+          <div class="section-title">
+            <span>📸</span>
+            <span>SCREENSHOT SHIELD</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            Upload a screenshot of suspicious Gmail, WhatsApp, SMS, or banking messages for OCR text & URL security extraction.
+          </p>
+
+          <div class="scanner-card">
+            
+            <div id="drag-drop-zone-screenshot" class="drag-drop-zone" onclick="document.getElementById('screenshot-input-native').click()">
+              <div class="drag-drop-icon">📸</div>
+              <div style="font-weight: 800; font-size: 1.05rem;">UPLOAD SCREENSHOT</div>
+              <div style="font-size: 0.8rem; color: var(--text-secondary);">Supported formats: PNG, JPG, JPEG, WEBP</div>
+              
+              <button type="button" class="action-btn action-btn-primary" style="margin-top: 0.4rem; padding: 0.5rem 1.1rem; font-size: 0.82rem;">
+                📷 CHOOSE SCREENSHOT IMAGE
+              </button>
+
+              <input type="file" id="screenshot-input-native" accept="image/png,image/jpeg,image/jpg,image/webp" style="display: none;" onchange="app.handleScreenshotPicker(this.files)" />
+            </div>
+
+            <!-- Screenshot Image Preview Box -->
+            <div id="screenshot-preview-container" style="display: none; margin-top: 1rem;">
+              <div style="font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.4rem;">SCREENSHOT PREVIEW:</div>
+              <div style="text-align: center; background: var(--surface); padding: 0.8rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                <img id="screenshot-preview-img" src="" alt="Screenshot Preview" style="max-width: 100%; max-height: 280px; border-radius: var(--radius-sm); border: 1px solid var(--border);" />
+              </div>
+
+              <button class="action-btn action-btn-primary" style="width: 100%; margin-top: 1rem;" onclick="app.analyzeScreenshotTool()">
+                📸 ANALYZE SCREENSHOT
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Loading & OCR Extraction State -->
+          <div id="screenshot-loading-box" class="scanning-progress-box" style="display: none; margin-top: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.88rem;">
+              <span>🔍 ANALYZING SCREENSHOT...</span>
+              <div class="progress-spinner"></div>
+            </div>
+            <div class="scanning-steps-list">
+              <div id="ocr-step-1" class="step-item active">◌ Extracting text via OCR engine...</div>
+              <div id="ocr-step-2" class="step-item">◌ Checking embedded URLs...</div>
+              <div id="ocr-step-3" class="step-item">◌ Analyzing security indicators...</div>
+              <div id="ocr-step-4" class="step-item">◌ Calculating security risk...</div>
+            </div>
+          </div>
+
+          <div id="screenshot-result-display" style="display: none; margin-top: 1.25rem;"></div>
+        </div>
+
+      </main>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer" role="contentinfo">
+      <p>© 2026 Cyber Shield X. All rights reserved. &bull; Check Before You Trust.</p>
+    </footer>
+
+  </div>
+
+  <!-- Application Modules -->
+  <script src="js/auth.js"></script>
+  <script src="js/scanner.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
