@@ -46,97 +46,108 @@ SMTP_PORT = int(os.environ.get('SMTP_PORT', 587))
 SMTP_USER = os.environ.get('SMTP_USER', '')
 SMTP_PASS = os.environ.get('SMTP_PASS', '')
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'cybershield.db')
+IS_VERCEL = os.environ.get('VERCEL') == '1' or os.environ.get('VERCEL_ENV') is not None or not os.access(os.path.dirname(__file__), os.W_OK)
+if IS_VERCEL:
+    DB_PATH = '/tmp/cybershield.db'
+else:
+    DB_PATH = os.path.join(os.path.dirname(__file__), 'cybershield.db')
+
 RESEND_RATE_LIMITS = {}
 
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    
-    # Users table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id TEXT PRIMARY KEY,
-            full_name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            salt TEXT NOT NULL,
-            created_at TEXT NOT NULL,
-            last_login TEXT NOT NULL,
-            status TEXT DEFAULT 'PROTECTED'
-        )
-    ''')
-    
-    # Email Logs table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS email_logs (
-            id TEXT PRIMARY KEY,
-            to_email TEXT NOT NULL,
-            subject TEXT NOT NULL,
-            provider TEXT NOT NULL,
-            status TEXT NOT NULL,
-            error_message TEXT,
-            sent_at TEXT NOT NULL
-        )
-    ''')
-
-    # Password Resets table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS password_resets (
-            token TEXT PRIMARY KEY,
-            email TEXT NOT NULL,
-            expires_at INTEGER NOT NULL
-        )
-    ''')
-
-    # Scan History & Telemetry table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS scan_history (
-            id TEXT PRIMARY KEY,
-            user_id TEXT NOT NULL,
-            scan_type TEXT NOT NULL,
-            input_source TEXT NOT NULL,
-            risk_score INTEGER NOT NULL,
-            result_status TEXT NOT NULL,
-            evidence_json TEXT,
-            recommendation_json TEXT,
-            timestamp TEXT NOT NULL
-        )
-    ''')
-
-    conn.commit()
-
-    # Create default demo account if empty
-    cursor.execute('SELECT COUNT(*) FROM users')
-    if cursor.fetchone()[0] == 0:
-        salt = secrets.token_hex(16)
-        pwd_hash = hashlib.sha256(('CyberShield#2026' + salt).encode('utf-8')).hexdigest()
-        now = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
-        cursor.execute('''
-            INSERT INTO users (id, full_name, email, password_hash, salt, created_at, last_login, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', ('usr_demo_101', 'NEELAPU MOHAN SAI', 'demo@cybershield.io', pwd_hash, salt, now, now, 'PROTECTED'))
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
         
-        # Populate initial scan activity sample records
-        sample_scans = [
-            ('scn_101', 'usr_demo_101', 'URL Scan', 'https://university-portal.edu', 12, 'SAFE', '["HTTPS Encrypted", "Domain Verified"]', '["Safe to visit"]', '2 mins ago'),
-            ('scn_102', 'usr_demo_101', 'Email Scan', 'Internship Opportunity Offer', 72, 'POSSIBLE SCAM', '["Upfront laptop fee requested", "Telegram contact only"]', '["Do not pay upfront fee"]', '15 mins ago'),
-            ('scn_103', 'usr_demo_101', 'Message Scan', 'WhatsApp Prize Notification', 91, 'HIGH RISK', '["Urgent account block threat", "Suspicious short URL"]', '["Do not click link", "Never share OTP"]', '1 hour ago'),
-            ('scn_104', 'usr_demo_101', 'QR Code Scan', 'QR Payment Payload', 18, 'SAFE', '["Valid merchant payment URL"]', '["Verify merchant name"]', '3 hours ago'),
-            ('scn_105', 'usr_demo_101', 'File Scan', 'Scholarship_Application.pdf.exe', 88, 'CRITICAL', '["Double executable extension .pdf.exe", "High risk file type"]', '["Delete file immediately"]', '5 hours ago')
-        ]
+        # Users table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id TEXT PRIMARY KEY,
+                full_name TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL,
+                salt TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                last_login TEXT NOT NULL,
+                status TEXT DEFAULT 'PROTECTED'
+            )
+        ''')
+        
+        # Email Logs table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS email_logs (
+                id TEXT PRIMARY KEY,
+                to_email TEXT NOT NULL,
+                subject TEXT NOT NULL,
+                provider TEXT NOT NULL,
+                status TEXT NOT NULL,
+                error_message TEXT,
+                sent_at TEXT NOT NULL
+            )
+        ''')
 
-        for scn in sample_scans:
-            cursor.execute('''
-                INSERT INTO scan_history (id, user_id, scan_type, input_source, risk_score, result_status, evidence_json, recommendation_json, timestamp)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ''', scn)
+        # Password Resets table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS password_resets (
+                token TEXT PRIMARY KEY,
+                email TEXT NOT NULL,
+                expires_at INTEGER NOT NULL
+            )
+        ''')
+
+        # Scan History & Telemetry table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS scan_history (
+                id TEXT PRIMARY KEY,
+                user_id TEXT NOT NULL,
+                scan_type TEXT NOT NULL,
+                input_source TEXT NOT NULL,
+                risk_score INTEGER NOT NULL,
+                result_status TEXT NOT NULL,
+                evidence_json TEXT,
+                recommendation_json TEXT,
+                timestamp TEXT NOT NULL
+            )
+        ''')
 
         conn.commit()
 
-    conn.close()
+        # Create default demo account if empty
+        cursor.execute('SELECT COUNT(*) FROM users')
+        if cursor.fetchone()[0] == 0:
+            salt = secrets.token_hex(16)
+            pwd_hash = hashlib.sha256(('CyberShield#2026' + salt).encode('utf-8')).hexdigest()
+            now = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
+            cursor.execute('''
+                INSERT INTO users (id, full_name, email, password_hash, salt, created_at, last_login, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', ('usr_demo_101', 'NEELAPU MOHAN SAI', 'demo@cybershield.io', pwd_hash, salt, now, now, 'PROTECTED'))
+            
+            # Populate initial scan activity sample records
+            sample_scans = [
+                ('scn_101', 'usr_demo_101', 'URL Scan', 'https://university-portal.edu', 12, 'SAFE', '["HTTPS Encrypted", "Domain Verified"]', '["Safe to visit"]', '2 mins ago'),
+                ('scn_102', 'usr_demo_101', 'Email Scan', 'Internship Opportunity Offer', 72, 'POSSIBLE SCAM', '["Upfront laptop fee requested", "Telegram contact only"]', '["Do not pay upfront fee"]', '15 mins ago'),
+                ('scn_103', 'usr_demo_101', 'Message Scan', 'WhatsApp Prize Notification', 91, 'HIGH RISK', '["Urgent account block threat", "Suspicious short URL"]', '["Do not click link", "Never share OTP"]', '1 hour ago'),
+                ('scn_104', 'usr_demo_101', 'QR Code Scan', 'QR Payment Payload', 18, 'SAFE', '["Valid merchant payment URL"]', '["Verify merchant name"]', '3 hours ago'),
+                ('scn_105', 'usr_demo_101', 'File Scan', 'Scholarship_Application.pdf.exe', 88, 'CRITICAL', '["Double executable extension .pdf.exe", "High risk file type"]', '["Delete file immediately"]', '5 hours ago')
+            ]
 
-init_db()
+            for scn in sample_scans:
+                cursor.execute('''
+                    INSERT INTO scan_history (id, user_id, scan_type, input_source, risk_score, result_status, evidence_json, recommendation_json, timestamp)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', scn)
+
+            conn.commit()
+
+        conn.close()
+    except Exception as e:
+        print(f"Database initialization warning (serverless mode): {e}")
+
+try:
+    init_db()
+except Exception as e:
+    print(f"init_db top-level execution warning: {e}")
 
 def hash_password(password, salt):
     return hashlib.sha256((password + salt).encode('utf-8')).hexdigest()
