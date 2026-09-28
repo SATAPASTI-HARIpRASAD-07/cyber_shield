@@ -1,8 +1,8 @@
 {
   "name": "cyber-shield-x",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Cyber Shield X - Focused Security Protection Suite",
+  "description": "Cyber Shield X - Focused Security Protection Suite (Production Release v2.0.0)",
   "scripts": {
     "build": "echo Static HTML/CSS/JS frontend ready"
   }

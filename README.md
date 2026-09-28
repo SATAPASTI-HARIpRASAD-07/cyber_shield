@@ -3,6 +3,7 @@
 > **Cyber Security Protection Platform & Decision-Support Suite**  
 > *Check Before You Trust*
 
+[![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-blue.svg)](https://github.com/SATAPASTI-HARIpRASAD-07/cyber_shield/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-green.svg)](https://python.org)
 [![React: 18](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org)
